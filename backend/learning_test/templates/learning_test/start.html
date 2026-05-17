@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}اختبار نمط التعلم{% endblock %}
+{% block learning_test_nav %}font-bold text-[#ec8079]{% endblock %}
+{% block background %}bg-gradient-to-t from-transparent to-[#feb2b4]/40{% endblock %}
+{% block content %}
+
+<div class="min-h-[calc(100vh-73px)] flex items-center justify-center py-10">
+  <div class="glass-card rounded-3xl shadow-xl p-8 w-full max-w-3xl text-center">
+    <img src="{% static 'images/test.png' %}" 
+    class="h-45 mb-10 mx-auto pointer-events-none "
+    alt="brain">
+    <h1 class="text-3xl font-extrabold mb-4">اختبار نمط التعلم VARK</h1>
+    <p class="text-gray-700 leading-8 mb-6">
+      أجب على مجموعة أسئلة قصيرة، ستظهر لك النتيجة: بصري، سمعي، قرائي/كتابي، أو تطبيقي.
+      بعد النتيجة تستطيع استخدام المساعد الذكي لتحويل أي مرفق لطريقة تناسب نمطك.
+    </p>
+
+    <form method="post" class="space-y-5">
+      {% csrf_token %}
+      <div class="grid md:grid-cols-2 gap-4 text-right">
+        <label class="cursor-pointer bg-white/80 rounded-2xl p-5 shadow border-gray-200  hover:border-[#ec8079]">
+          <input type="radio" name="age_group" value="under15" class="ml-2" {% if selected_age == 'under15' %}checked{% endif %}>
+          <span class="font-bold">أصغر من 15</span>
+          <p class="text-sm text-gray-600 mt-2">لغة مبسطة ومناسبة للطلاب الصغار.</p>
+        </label>
+        <label class="cursor-pointer bg-white/80 rounded-2xl p-5 shadow border-gray-200  hover:border-[#ec8079]">
+          <input type="radio" name="age_group" value="15plus" class="ml-2" {% if selected_age == '15plus' %}checked{% endif %}>
+          <span class="font-bold">أكبر من 15</span>
+          <p class="text-sm text-gray-600 mt-2">أسئلة مناسبة للطلاب والبالغين.</p>
+        </label>
+      </div>
+
+      <button class="px-8 py-3 rounded-xl bg-[#ec8079] text-white shadow hover:opacity-90">ابدأ الاختبار</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

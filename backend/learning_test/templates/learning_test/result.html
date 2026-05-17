@@ -1,0 +1,50 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}نتيجة نمط التعلم{% endblock %}
+{% block learning_test_nav %}font-bold text-[#ec8079]{% endblock %}
+{% block background %}bg-gradient-to-t from-transparent to-[#feb2b4]/40{% endblock %}
+{% block content %}
+
+<div class="min-h-[calc(100vh-73px)] flex items-center justify-center py-10">
+  <div class="glass-card rounded-3xl shadow-xl p-8 w-full max-w-4xl text-center">
+    {% if 'بصري' in session.learning_style %}
+    <img src="{% static 'images/visual.png' %}"
+    class="h-45 mb-10 mx-auto pointer-events-none "
+    alt="Visual">
+
+  {% elif 'سمعي' in session.learning_style %}
+    <img src="{% static 'images/auditory.png' %}"
+    class="h-55 mb-10 mx-auto pointer-events-none "
+    alt="Auditory">
+  
+  {% elif 'قرائي' in session.learning_style %}
+    <img src="{% static 'images/reading.png' %}"
+    class="h-45 mb-10 mx-auto pointer-events-none "
+    alt="Reading">
+  
+  {% endif %}    <h1 class="text-3xl font-extrabold mb-3">نمط تعلمك هو: {{ session.learning_style|default:'غير محدد' }}</h1>
+    <p class="text-gray-700 leading-8 mb-8">{{ session.ai_summary }}</p>
+
+    <div class="grid md:grid-cols-3 gap-4 text-right mb-8">
+      <div class="bg-white/80 rounded-2xl p-5 shadow">
+        <h3 class="font-bold mb-2">ماذا يعني؟</h3>
+        <p class="text-sm text-gray-600"> سيتم عرض المحتوى بطريقة أقرب لفهمك وتذكرك.</p>
+      </div>
+      <div class="bg-white/80 rounded-2xl p-5 shadow">
+        <h3 class="font-bold mb-2">الخطوة التالية</h3>
+        <p class="text-sm text-gray-600">ارفع المحتوى الذي تريد تعلمه للمساعد الذكي.</p>
+      </div>
+      <div class="bg-white/80 rounded-2xl p-5 shadow">
+        <h3 class="font-bold mb-2">التحويل الذكي</h3>
+        <p class="text-sm text-gray-600">سيحوّل المحتوى إلى ملخص، مخطط، شرح... بناءً على نمطك.</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="{% url 'agent_chat:chat' %}" class="px-7 py-3 rounded-xl bg-[#ec8079] text-white shadow hover:opacity-90">انتقل إلى المساعد الذكي</a>
+      <a href="{% url 'learning_test:start' %}" class="px-7 py-3 rounded-xl bg-gray-900 text-white shadow hover:opacity-90">إعادة الاختبار</a>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
