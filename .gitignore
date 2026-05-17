@@ -1,8 +1,11 @@
 .venv/
+venv/
+env/
 __pycache__/
 *.pyc
 .env
 db.sqlite3
-.DS_Store
 media/
 staticfiles/
+.DS_Store
+__MACOSX/
