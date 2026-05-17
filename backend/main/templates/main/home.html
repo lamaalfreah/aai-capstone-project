@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block title %}الرئيسية{% endblock %}
+{% block content %}
+
+<section class="min-h-[calc(100vh-73px)] flex flex-col justify-center py-10">
+  <div class="grid lg:grid-cols-2 gap-15 items-center">
+    <div>
+      <h1 class="text-5xl font-bold text-center mb-5 flex items-center justify-start gap-2 whitespace-nowrap">
+
+      <span>
+ذاكر معنا وخلّك 
+      </span>
+      <img src="{% static 'images/logo.png' %}" 
+      class="h-27 w-auto object-contain inline-block" 
+      alt="فاهم">
+    </h1>
+
+      <p class="text-gray-700 leading-8 text-lg mb-7">
+        يبدأ المستخدم باختيار الفئة العمرية، ثم يُجيب على اختبار VARK سؤالًا بسؤال.
+        بعد ظهور النتيجة، يمكنه رفع صورة أو فيديو أو ملف، ليحوّله المساعد الذكي إلى محتوى مناسب لنمطه: بصري، سمعي، أو قرائي/كتابي.
+      </p>
+      <div class="flex flex-col sm:flex-row relative mb-30">
+        <a href="{% url 'agent_chat:chat' %}" class="px-6 py-3 bg-[#5ab3ee] text-white rounded-xl shadow hover:opacity-90 text-center relative ">جرّب المساعد الذكي</a>
+        <img src="{% static 'images/home.png' %}" 
+        class="absolute -bottom-40 mr-50 w-40  pointer-events-none"
+        alt="brain">
+      </div>
+    </div>
+
+    <div class="glass-card rounded-3xl shadow-xl p-8 w-full max-w-1xl text-center mt-25">
+      <h1 class="text-2xl font-extrabold mb-4">اختبار نمط التعلم VARK</h1>
+      <p class="text-sm text-gray-700 leading-8 mb-6">
+        حدد فئتك العمرية وأجب على أسئلة قصيرة لتحديد نمط تعلّمك، ثم دع المساعد الذكي يحوّل المحتوى بالطريقة الأنسب لك.
+      </p>
+      <form method="post" action="{% url 'learning_test:start' %}" class="space-y-5">
+        {% csrf_token %}
+        <div class="grid md:grid-cols-2 gap-4 text-right">
+          <label class="cursor-pointer bg-white/80 rounded-2xl p-3 shadow border-gray-200  hover:border-[#ec8079]">
+            <input type="radio" name="age_group" value="under15" class="ml-2" {% if selected_age == 'under15' %}checked{% endif %}>
+            <span class="font-bold text-gray-700">العمر أصغر من 15</span>
+          </label>
+          <label class="cursor-pointer bg-white/80 rounded-2xl p-3 shadow border-gray-200 hover:border-[#ec8079]">
+            <input type="radio" name="age_group" value="15plus" class="ml-2" {% if selected_age == '15plus' %}checked{% endif %}>
+            <span class="font-bold text-gray-700">العمر أكبر من 15</span>
+          </label>
+        </div>
+  
+        <button class="px-8 py-3 rounded-xl bg-[#5ab3ee] text-white shadow hover:opacity-90">ابدأ الاختبار</button>
+      </form>
+    </div>
+  </div>
+  <div class="grid md:grid-cols-3 gap-4 mt-12">
+    <div class="glass-card rounded-2xl p-5 shadow">
+      <h3 class="font-bold mb-2">1. اختبار VARK</h3>
+      <p class="text-sm text-gray-600">أسئلة قصيرة تظهر سؤالًا تلو الآخر.</p>
+    </div>
+    <div class="glass-card rounded-2xl p-5 shadow">
+      <h3 class="font-bold mb-2">2. نتيجة ذكية</h3>
+      <p class="text-sm text-gray-600">تحديد النمط بالذكاء الاصطناعي مع شرح مختصر.</p>
+    </div>
+    <div class="glass-card rounded-2xl p-5 shadow">
+      <h3 class="font-bold mb-2">3. Agent مخصص</h3>
+      <p class="text-sm text-gray-600">تحويل المرفقات إلى صيغة تناسب نمطك.</p>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
