@@ -1,3 +1,34 @@
 from django.db import models
 
-# Create your models here.
+
+class ChatSession(models.Model):
+    title = models.CharField(max_length=100, default="محادثة جديدة")
+    session_key = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
+class ChatMessage(models.Model):
+    ROLE_CHOICES = [
+        ('user', 'User'),
+        ('agent', 'Agent'),
+    ]
+
+    session = models.ForeignKey(
+        ChatSession,
+        on_delete=models.CASCADE,
+        related_name="messages",
+        null=True,
+        blank=True
+    )
+
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
+    content = models.TextField(blank=True)
+    attachment = models.FileField(upload_to='chat_uploads/', blank=True, null=True)
+    learning_style = models.CharField(max_length=100, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.role}: {self.content[:40]}"
