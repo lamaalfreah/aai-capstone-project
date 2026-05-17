@@ -1,0 +1,63 @@
+
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}نتيجة فهم المحتوى{% endblock %}
+{% block agent_nav %}font-bold text-[#ec8079]{% endblock %}
+{% block background %}bg-gradient-to-t from-transparent to-[#feb2b4]/40{% endblock %}
+
+{% block content %}
+
+<div class="min-h-[calc(100vh-73px)] flex items-center justify-center py-10">
+  <div class="glass-card rounded-3xl shadow-xl p-8 w-full max-w-4xl text-center">
+
+    {% if result_status == "success" %}
+      <img src="{% static 'images/successful.png' %}"
+           class="h-45 mb-10 mx-auto pointer-events-none"
+           alt="successful">
+  
+    {% else %}
+      <img src="{% static 'images/Failed.png' %}"
+           class="h-55 mb-10 mx-auto pointer-events-none"
+           alt="Failed">
+    {% endif %}
+  
+    <h1 class="text-3xl font-extrabold mb-3">
+      {{ result_title }}
+    </h1>
+
+    <p class="text-gray-700 leading-8 mb-8">
+      {{ result_summary }}
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-4 text-right mb-8">
+      <div class="bg-white/80 rounded-2xl p-5 shadow">
+        <h3 class="font-bold mb-2">فهم ممتاز</h3>
+        <p class="text-sm text-gray-600">{{ counts.excellent }} إجابة</p>
+      </div>
+      <div class="bg-white/80 rounded-2xl p-5 shadow">
+        <h3 class="font-bold mb-2">فهم جيد</h3>
+        <p class="text-sm text-gray-600">{{ counts.good }} إجابة</p>
+      </div>
+      <div class="bg-white/80 rounded-2xl p-5 shadow">
+        <h3 class="font-bold mb-2">يحتاج مراجعة</h3>
+        <p class="text-sm text-gray-600">{{ counts.needs_review }} إجابة</p>
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+      <a href="{% url 'agent_chat:chat' %}"
+         class="flex-1 text-center px-7 py-3 rounded-xl bg-[#ec8079] text-white shadow hover:opacity-90">
+        العودة للمساعد
+      </a>
+
+      <a href="{% url 'agent_chat:question' 1 %}"
+         class="flex-1 text-center px-7 py-3 rounded-xl bg-gray-900 text-white shadow hover:opacity-90">
+        إعادة الاختبار
+      </a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

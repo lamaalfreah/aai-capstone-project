@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}اختبار فهم المحتوى{% endblock %}
+{% block agent_nav %}font-bold text-[#ec8079]{% endblock %}
+{% block background %}bg-gradient-to-t from-transparent to-[#8ec8fa]/40{% endblock %}
+
+{% block content %}
+
+<div class="min-h-[calc(100vh-73px)] flex items-center justify-center py-10">
+
+  <div class="glass-card rounded-3xl shadow-xl p-8 w-full max-w-3xl">
+
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-center mb-2">
+        اختبار فهم المحتوى
+      </h1>
+
+      <p class="text-center text-sm text-gray-600">
+        السؤال <b>{{ step }}</b> من <b>{{ total }}</b>
+      </p>
+
+      <div class="w-full bg-gray-200 rounded-full h-2 mt-4 overflow-hidden">
+        <div class="bg-[#ec8079] h-2 rounded-full transition-all duration-500"
+             style="width: {{ progress }}%;">
+        </div>
+      </div>
+    </div>
+
+    <h2 class="text-2xl font-bold text-center mb-8 text-[#1f2937]">
+      {{ question.text }}
+    </h2>
+
+    <form method="post" class="space-y-4">
+      {% csrf_token %}
+
+      {% for option in question.options %}
+        <label class="block cursor-pointer bg-white/80 rounded-2xl p-4 shadow  hover:border-[#ec8079] transition">
+          <input type="radio"
+                 name="answer"
+                 value="{{ option.value }}"
+                 required
+                 class="ml-2"
+                 {% if previous_answer == option.value %}checked{% endif %}>
+          {{ option.label }}
+        </label>
+      {% endfor %}
+
+      <div class="flex justify-between items-center pt-2">
+
+        {% if step > 1 %}
+          <a href="{% url 'agent_chat:question' step|add:'-1' %}"
+             class="px-6 py-2 rounded-xl bg-gray-200 text-gray-700 hover:bg-gray-300 transition">
+            رجوع
+          </a>
+        {% else %}
+          <span></span>
+        {% endif %}
+
+        <button class="px-6 py-2 rounded-xl bg-[#ec8079] text-white shadow hover:opacity-90 transition font-semibold">
+          التالي
+        </button>
+
+      </div>
+    </form>
+
+  </div>
+
+</div>
+
+{% endblock %}
