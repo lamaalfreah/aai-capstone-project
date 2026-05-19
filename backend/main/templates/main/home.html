@@ -37,11 +37,11 @@
         {% csrf_token %}
         <div class="grid md:grid-cols-2 gap-4 text-right">
           <label class="cursor-pointer bg-white/80 rounded-2xl p-3 shadow border-gray-200  hover:border-[#ec8079]">
-            <input type="radio" name="age_group" value="under15" class="ml-2" {% if selected_age == 'under15' %}checked{% endif %}>
+            <input required type="radio" name="age_group" value="under15" class="ml-2" {% if selected_age == 'under15' %}checked{% endif %}>
             <span class="font-bold text-gray-700">العمر أصغر من 15</span>
           </label>
           <label class="cursor-pointer bg-white/80 rounded-2xl p-3 shadow border-gray-200 hover:border-[#ec8079]">
-            <input type="radio" name="age_group" value="15plus" class="ml-2" {% if selected_age == '15plus' %}checked{% endif %}>
+            <input required type="radio" name="age_group" value="15plus" class="ml-2" {% if selected_age == '15plus' %}checked{% endif %}>
             <span class="font-bold text-gray-700">العمر أكبر من 15</span>
           </label>
         </div>
