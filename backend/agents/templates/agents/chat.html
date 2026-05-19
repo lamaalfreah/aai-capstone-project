@@ -1,4 +1,3 @@
-
 {% extends 'main/base.html' %}
 {% load static %}
 
@@ -81,11 +80,13 @@
                        class="w-full h-full object-cover"
                        alt="User">
                 </div>
+
                 <div class="bg-[#ec8079] text-white rounded-3xl rounded-tr-sm px-5 py-4 shadow leading-8 text-start"
-                dir="auto"
-                style="text-align: start;">
+                     dir="auto"
+                     style="text-align: start;">
+
                   {% if msg.content %}
-                  <p dir="auto" class="text-start">{{ msg.content }}</p>
+                    <p dir="auto" class="text-start">{{ msg.content }}</p>
                   {% endif %}
 
                   {% if msg.attachment %}
@@ -93,6 +94,7 @@
                       📎 {{ msg.attachment.name }}
                     </div>
                   {% endif %}
+
                 </div>
 
               </div>
@@ -103,18 +105,56 @@
             <div class="flex justify-end">
               <div class="flex items-start gap-3 max-w-[85%]">
 
-                <div class="bg-white/95 text-gray-800 rounded-3xl rounded-tl-sm px-5 py-4 shadow border border-white leading-8 max-w-full text-sm smart-direction"
-                dir="auto">
-             {{ msg.content }}
-                <!-- Understanding Test Button -->
-                <div class="mt-3 flex justify-end w-full" dir="ltr">
-                  <a href="{% url 'agent_chat:question' 1 %}"
-                     dir="rtl"
-                     class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#fdf0e1] text-[#ec8079] border border-[#feb2b4]/60 shadow-sm hover:bg-[#feb2b4]/30 transition text-xs font-semibold">
-                    <span>🧠</span>
-                    <span>اختبر فهمك للمحتوى</span>
-                  </a>
-                </div>
+                <div class="bg-white/95 text-gray-800 rounded-3xl rounded-tl-sm px-5 py-4 shadow border border-white leading-8 max-w-full text-sm"
+                     dir="auto">
+
+                  <div class="smart-direction" dir="auto">{{ msg.content }}</div>
+
+                  {% if msg.metadata.image_path %}
+                    <div class="mt-4 rounded-3xl overflow-hidden border border-[#feb2b4]/60 bg-white shadow-sm">
+                      <img src="{{ MEDIA_URL }}{{ msg.metadata.image_path }}"
+                           alt="Generated diagram"
+                           class="w-full max-h-[420px] object-contain bg-white p-3">
+                    </div>
+                    <a href="{{ MEDIA_URL }}{{ msg.metadata.image_path }}"
+                       target="_blank"
+                       class="inline-flex mt-2 text-xs text-[#ec8079] hover:underline">
+                      فتح المخطط في تبويب جديد
+                    </a>
+                  {% endif %}
+
+                  {% if msg.metadata.audio_path %}
+                    <div class="mt-4 bg-[#fdf0e1] border border-[#feb2b4]/60 rounded-2xl p-3">
+                      <p class="text-xs font-semibold text-[#ec8079] mb-2">شرح صوتي</p>
+                      <audio controls class="w-full">
+                        <source src="{{ MEDIA_URL }}{{ msg.metadata.audio_path }}" type="audio/mpeg">
+                        متصفحك لا يدعم تشغيل الصوت.
+                      </audio>
+                    </div>
+                  {% endif %}
+
+                  {% if msg.metadata.file_path %}
+                    <div class="mt-4">
+                      <a href="{{ MEDIA_URL }}{{ msg.metadata.file_path }}"
+                         target="_blank"
+                         class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#fdf0e1] text-[#ec8079] border border-[#feb2b4]/60 shadow-sm hover:bg-[#feb2b4]/30 transition text-xs font-semibold">
+                        <span>📄</span>
+                        <span>تحميل الملف التعليمي</span>
+                      </a>
+                    </div>
+                  {% endif %}
+
+                  {% if msg.is_learning_output %}
+                    <div class="mt-3 flex justify-end w-full" dir="ltr">
+                      <a href="{% url 'agent_chat:question' 1 %}"
+                         dir="rtl"
+                         class="inline-flex items-center gap-2 px-4 py-2 rounded-2xl bg-[#fdf0e1] text-[#ec8079] border border-[#feb2b4]/60 shadow-sm hover:bg-[#feb2b4]/30 transition text-xs font-semibold">
+                        <span>🧠</span>
+                        <span>اختبر فهمك للمحتوى</span>
+                      </a>
+                    </div>
+                  {% endif %}
+
                 </div>
 
                 <div class="w-12 h-12 shrink-0 rounded-full bg-white shadow flex items-center justify-center overflow-hidden">
@@ -158,7 +198,7 @@
 
           <!-- Selected Attachment Preview -->
           <div id="filePreview"
-              class="hidden mb-3 w-fit max-w-full items-center gap-2 bg-[#fdf0e1] border border-[#feb2b4]/60 rounded-2xl px-3 py-2 text-sm text-gray-700">
+               class="hidden mb-3 w-fit max-w-full items-center gap-2 bg-[#fdf0e1] border border-[#feb2b4]/60 rounded-2xl px-3 py-2 text-sm text-gray-700">
 
             <span class="text-lg">📎</span>
 
@@ -189,7 +229,7 @@
             </label>
 
             <!-- Message Box -->
-              <textarea
+            <textarea
               id="messageInput"
               name="message"
               rows="1"
@@ -206,6 +246,7 @@
   </div>
 
 </div>
+
 <script>
   const attachmentInput = document.getElementById("attachmentInput");
   const filePreview = document.getElementById("filePreview");
@@ -252,6 +293,7 @@
     });
   }
 </script>
+
 <style>
   .smart-direction {
     unicode-bidi: plaintext;
@@ -275,4 +317,5 @@
     direction: rtl;
   }
 </style>
+
 {% endblock %}
