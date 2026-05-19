@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import ChatMessage, ChatSession
 from .services.response_router import route_user_request
+from .services.system_evaluator import generate_quiz_from_content, evaluate_system_and_student
 
 def fake_agent_response(message, file_obj, learning_style):
     style = learning_style or 'غير محدد'
@@ -105,67 +106,33 @@ def chat_view(request):
     })
 
 
-## TODO: By reem > Replace with AI-generated questions later 
-ASSESSMENT_QUESTIONS = [
-    {
-        "text": "بعد قراءة أو سماع المحتوى، ما الفكرة الأساسية التي فهمتها؟",
-        "options": [
-            {"value": "excellent", "label": "أستطيع شرح الفكرة الأساسية بوضوح"},
-            {"value": "good", "label": "فهمت الفكرة العامة لكن أحتاج مراجعة بسيطة"},
-            {"value": "needs_review", "label": "ما زالت بعض النقاط غير واضحة"},
-        ],
-    },
-    {
-        "text": "لو طُلب منك تطبيق المحتوى في مثال، كيف سيكون استعدادك؟",
-        "options": [
-            {"value": "excellent", "label": "أستطيع تطبيقه على مثال جديد"},
-            {"value": "good", "label": "أستطيع تطبيقه إذا كان المثال قريبًا مما شرح لي"},
-            {"value": "needs_review", "label": "أحتاج شرحًا إضافيًا قبل التطبيق"},
-        ],
-    },
-    {
-        "text": "ما أفضل خطوة تالية لك بعد هذا الشرح؟",
-        "options": [
-            {"value": "excellent", "label": "الانتقال إلى أسئلة أصعب أو تطبيق عملي"},
-            {"value": "good", "label": "مراجعة ملخص قصير ثم التطبيق"},
-            {"value": "needs_review", "label": "إعادة شرح المحتوى بطريقة أبسط"},
-        ],
-    },
-]
-def question_view(request, step):
-    """
-    Post-content understanding assessment.
-
-    This is a placeholder flow for the team member responsible for testing whether
-    the user understood the generated content. She can replace ASSESSMENT_QUESTIONS
-    with AI-generated questions later.
-    """
-    total = len(ASSESSMENT_QUESTIONS)
+def question_view(request, step): 
+    questions = request.session.get("generated_questions", [])
+    total = len(questions)
     step = max(1, min(step, total))
-    question = ASSESSMENT_QUESTIONS[step - 1]
+    question = questions[step - 1] 
 
     answers = request.session.get("agent_assessment_answers", {})
-
     if request.method == "POST":
         answer = request.POST.get("answer", "")
         if answer:
             answers[str(step)] = answer
             request.session["agent_assessment_answers"] = answers
-
+        
         if step < total:
             return redirect("agent_chat:question", step=step + 1)
-
         return redirect("agent_chat:result")
 
     progress = int((step / total) * 100)
 
     return render(request, "agents/question.html", {
-        "question": question,
+        "question": question, 
         "step": step,
         "total": total,
         "progress": progress,
         "previous_answer": answers.get(str(step), ""),
     })
+
 
 
 def result_view(request):
