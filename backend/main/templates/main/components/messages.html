@@ -1,7 +1,29 @@
 {% if messages %}
-  <div class="py-4 space-y-2">
+  <div class="fixed px-4 py-3 top-36 left-1/2 -translate-x-1/2 z-50 w-full max-w-2xl px-4">
+
     {% for message in messages %}
-      <div class="rounded-xl px-4 py-3 bg-white/80 shadow text-sm">{{ message }}</div>
+      <div class="relative bg-white/95 border border-[#feb2b4] shadow-xl rounded-2xl px-5 py-4 text-right">
+
+        <button
+          type="button"
+          onclick="this.parentElement.remove()"
+          class="absolute top-2 left-3 text-gray-400 hover:text-[#ec8079] text-xl"
+        >
+          ×
+        </button>
+
+        <div class="flex items-start gap-3 pr-4">
+          <div class="w-7 h-7 rounded-full bg-[#fdf0e1] text-[#ec8079] flex items-center justify-center shrink-0 font-bold">
+            !
+          </div>
+
+          <p class="text-sm leading-7 text-gray-700">
+            {{ message }}
+          </p>
+        </div>
+
+      </div>
     {% endfor %}
+
   </div>
 {% endif %}
