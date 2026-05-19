@@ -30,5 +30,15 @@ class ChatMessage(models.Model):
     learning_style = models.CharField(max_length=100, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    # Stores generated files/images/audio paths and service information.
+    metadata = models.JSONField(default=dict, blank=True)
+
+    # True when this message contains transformed educational content.
+    # The assessment button appears only for this type of message.
+    is_learning_output = models.BooleanField(default=False)
+    
+    class Meta:
+            ordering = ["created_at"]
+
     def __str__(self):
         return f"{self.role}: {self.content[:40]}"
