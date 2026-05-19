@@ -177,7 +177,7 @@ aai-capstone-project/
 │   │   └── services/
 │   │       ├── audio_generator.py
 │   │       ├── image_generator.py
-│   │       ├── learner_evaluator.py
+│   │       ├── system_evaluator.py
 │   │       ├── file_to_text.py
 │   │       ├── speech_to_text.py
 │   │       ├── image_to_text.py
@@ -220,13 +220,43 @@ python3 -m venv .venv
 source .venv/bin/activate
 ```
 
-### 3. Install dependencies
+### 3. Install required system tools
+
+Some services require external system tools in addition to Python packages.
+
+#### macOS
+
+```bash
+brew install graphviz
+brew install ffmpeg
+```
+
+#### Windows
+
+1. Install Graphviz:
+https://graphviz.org/download/
+
+After installation, add Graphviz to PATH.
+
+2. Install FFmpeg:
+https://ffmpeg.org/download.html
+
+Or using Chocolatey:
+
+```bash
+choco install ffmpeg
+```
+
+- `graphviz` is required for generating diagrams and mind maps.
+- `ffmpeg` is required for audio processing and speech-to-text features.
+
+### 4. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Run the project
+### 5. Run the project
 
 ```bash
 cd backend
@@ -258,7 +288,7 @@ OPENAI_API_KEY=your-openai-api-key-here
 
 | Name | Role |
 |---|---|
-| `Lama Alfreah` | Full Django setup, UI design and templates, database models, VARK test, file-to-text, AI text formatting and audio generation |
+| `Lama Alfreah` | Full Django setup, UI design and templates, database models, VARK test, file-to-text, AI text formatting, audio generation and response router integration |
 | `Reem Alyahya` | Image to Text, Speech to Text, Learner Evaluator and file generator |
 | `Hissah Alkharboush` | Image generation and response router integration |
 
