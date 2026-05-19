@@ -9,7 +9,9 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-
+import uuid
+from pathlib import Path
+from django.conf import settings
 # ARABIC
 import arabic_reshaper
 from bidi.algorithm import get_display
@@ -67,3 +69,41 @@ def generate_educational_pdf_final(raw_text):
     doc.build(story)
     buffer.seek(0)
     return buffer
+
+def generate_learning_file(content, learning_style="reading"):
+    """
+    Wrapper used by the response router.
+    Saves the generated PDF into media/generated_files.
+    """
+
+    if not content or not content.strip():
+        return {
+            "success": False,
+            "file_path": None,
+            "message": "لا يوجد محتوى كافٍ لإنشاء ملف تعليمي.",
+        }
+
+    try:
+        pdf_buffer = generate_educational_pdf_final(content)
+
+        output_dir = Path(settings.MEDIA_ROOT) / "generated_files"
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        file_name = f"{uuid.uuid4().hex}_learning_file.pdf"
+        output_path = output_dir / file_name
+
+        with open(output_path, "wb") as f:
+            f.write(pdf_buffer.getvalue())
+
+        return {
+            "success": True,
+            "file_path": f"generated_files/{file_name}",
+            "message": "تم إنشاء الملف التعليمي بنجاح.",
+        }
+
+    except Exception as exc:
+        return {
+            "success": False,
+            "file_path": None,
+            "message": f"حدث خطأ أثناء إنشاء الملف: {exc}",
+        }
